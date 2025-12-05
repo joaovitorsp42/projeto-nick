@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sol & Lua — Troca de tema</title>
+  <style>
+    :root{
+      --bg-day: linear-gradient(180deg,#fff8e8 0%, #eaf6ff 60%);
+      --bg-night: linear-gradient(180deg,#081229 0%, #001021 60%);
+      --text-day:#2b2b2b;
+      --text-night:#e6eef9;
+      --accent:#ffb347;
+    }
+
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial}
+    body{transition:background 600ms ease,color 600ms ease;display:flex;flex-direction:column}
+
+    /* Top bar with icons */
+    .topbar{position:fixed;left:0;right:0;top:12px;display:flex;justify-content:center;gap:12px;z-index:40}
+    .icon-btn{width:56px;height:56px;border-radius:14px;display:inline-grid;place-items:center;border:none;background:transparent;cursor:pointer;backdrop-filter: blur(6px);box-shadow:0 6px 18px rgba(2,6,23,0.08);transition:transform 180ms ease}
+    .icon-btn:active{transform:scale(0.96)}
+    .icon-btn svg{width:36px;height:36px;display:block}
+
+    /* page layouts */
+    main{flex:1;display:grid;place-items:center;padding:120px 20px 40px;min-height:100vh}
+    .card{width:100%;max-width:860px;padding:36px;border-radius:18px;box-shadow:0 12px 40px rgba(2,6,23,0.08);transition:background 400ms ease,color 400ms ease}
+
+    .headline{font-size:clamp(20px,3vw,28px);margin:0 0 12px}
+    .lead{font-size:clamp(14px,1.7vw,18px);margin:0 0 20px;line-height:1.45}
+
+    .action{display:flex;gap:12px;align-items:center}
+    .btn{padding:12px 18px;border-radius:12px;border:none;cursor:pointer;font-weight:600}
+
+    /* Sun & Moon backgrounds (absolute, behind card) */
+    .bg-sun, .bg-moon{position:fixed;inset:0;pointer-events:none;z-index:-1;display:flex;justify-content:center;align-items:flex-start;padding-top:0;transition:opacity 600ms ease,transform 600ms ease;}
+
+    /* Sun design */
+    .bg-sun{position:fixed;inset:0;pointer-events:none;z-index:0;display:flex;justify-content:center;align-items:flex-start;padding-top:20px;transition:opacity 600ms ease,transform 600ms ease;}
+    .sun-core{width:260px;height:260px;border-radius:50%;background:radial-gradient(circle at 30% 30%, #fffbe0 0%, #ffd76a 20%, #ffb347 55%, #ff8f1f 100%);box-shadow:0 0 120px 20px rgba(255,163,64,0.25), inset 0 12px 40px rgba(255,240,190,0.35);transition:opacity 400ms ease,transform 400ms ease}
+    .sun-rays{position:absolute;width:520px;height:520px;border-radius:50%;background:conic-gradient(from 0deg,#ffefc2 0deg, transparent 20deg, #fff3cc 40deg, transparent 60deg);filter:blur(18px);opacity:0.9;animation:spin 18s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* Moon design */
+    .bg-moon{display:grid;place-items:center}
+    .moon-core{width:160px;height:160px;border-radius:50%;background:radial-gradient(circle at 30% 20%, #ffffff 0%, #dfe7ff 20%, #b7c7e8 40%, #8fa0c6 100%);box-shadow:0 0 25px rgba(120,150,200,0.12), inset -12px 8px 25px rgba(0,0,0,0.12);position:relative;transition:transform 600ms cubic-bezier(.2,.9,.2,1),opacity 400ms ease;margin-top:40px;opacity:0.65;}
+    .moon-crater{position:absolute;border-radius:50%;background:linear-gradient(180deg,rgba(0,0,0,0.06),rgba(0,0,0,0.18));mix-blend-mode:multiply}
+    .moon-crater.c1{width:36px;height:36px;left:26%;top:36%}
+    .moon-crater.c2{width:24px;height:24px;left:58%;top:46%}
+    .moon-crater.c3{width:18px;height:18px;left:44%;top:62%}
+
+    /* Day / Night theme styles */
+    body.day{background:var(--bg-day);color:var(--text-day)}
+    body.day .card{background:rgba(255,255,255,0.9)}
+    body.day .bg-sun{opacity:1;pointer-events:none}
+    body.day .bg-moon{opacity:0;transform:translateY(20px) scale(.9)}
+
+    body.night{background:var(--bg-night);color:var(--text-night)}
+    body.night .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03)}
+    body.night .bg-moon{opacity:1}
+    body.night .bg-sun{opacity:0;transform:translateY(-20px) scale(.9)}
+
+    /* Sun off state */
+    .sun-off .sun-core{opacity:0;transform:scale(.6);filter:grayscale(0.3) blur(2px)}
+    .sun-off .sun-rays{opacity:0}
+
+    /* Moon near animation */
+    .moon-near .moon-core{transform:translateY(20px) scale(1.8)}
+    .moon-near .bg-moon{transform:translateY(0)}
+
+    /* icon active visuals */
+    .icon-btn.active{box-shadow:0 10px 30px rgba(0,0,0,0.12);background:rgba(255,255,255,0.06)}
+
+    /* small screens */
+    @media (max-width:640px){
+      .icon-btn{width:46px;height:46px;border-radius:12px}
+      .sun-core,.moon-core{width:200px;height:200px}
+    }
+  </style>
+</head>
+<body class="day">
+
+  <div class="topbar" role="toolbar" aria-label="Alternar tema">
+    <button id="btnSun" class="icon-btn active" title="Dia" aria-pressed="true">
+      <!-- Sun SVG -->
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="12" cy="12" r="4" fill="#FFB347" />
+        <g stroke="#FFB347" stroke-width="1.2" stroke-linecap="round">
+          <path d="M12 1.5v2.2" />
+          <path d="M12 20.3v2.2" />
+          <path d="M4.2 4.2l1.6 1.6" />
+          <path d="M18.2 18.2l1.6 1.6" />
+          <path d="M1.5 12h2.2" />
+          <path d="M20.3 12h2.2" />
+          <path d="M4.2 19.8l1.6-1.6" />
+          <path d="M18.2 5.8l1.6-1.6" />
+        </g>
+      </svg>
+    </button>
+
+    <button id="btnMoon" class="icon-btn" title="Noite" aria-pressed="false">
+      <!-- Moon SVG -->
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3 6.8 6.8 0 0 0 21 12.8z" fill="#cbd6ff"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Decorative backgrounds -->
+  <div class="bg-sun" aria-hidden="true">
+    <div class="sun-rays"></div>
+    <div class="sun-core"></div>
+  </div>
+
+  <div class="bg-moon" aria-hidden="true">
+    <div class="moon-core">
+      <div class="moon-crater c1"></div>
+      <div class="moon-crater c2"></div>
+      <div class="moon-crater c3"></div>
+    </div>
+  </div>
+
+  <main>
+    <section class="card" id="card" role="region" aria-label="Conteúdo principal">
+      <h1 class="headline">Bem-vindo(a) — escolha Sol ou Lua</h1>
+      <p class="lead">Clique no ícone do <strong>Sol</strong> para um tema claro com um sol radiante. Clique no ícone da <strong>Lua</strong> para o tema escuro com a lua ao fundo. Cada tema oferece um botão de ação com animação.</p>
+
+      <div class="action">
+        <button id="mainAction" class="btn" type="button">Apagar Sol</button>
+        
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const body = document.body;
+    const btnSun = document.getElementById('btnSun');
+    const btnMoon = document.getElementById('btnMoon');
+    const mainAction = document.getElementById('mainAction');
+    const status = document.getElementById('status');
+    const bgSun = document.querySelector('.bg-sun');
+    const bgMoon = document.querySelector('.bg-moon');
+
+    function setDay(){
+      body.classList.remove('night','moon-near');
+      body.classList.add('day');
+      btnSun.classList.add('active'); btnSun.setAttribute('aria-pressed','true');
+      btnMoon.classList.remove('active'); btnMoon.setAttribute('aria-pressed','false');
+      mainAction.textContent = 'Apagar Sol';
+      
+      // ensure sun visible
+      bgSun.classList.remove('sun-off');
+    }
+
+    function setNight(){
+      body.classList.remove('day','sun-off');
+      body.classList.add('night');
+      btnMoon.classList.add('active'); btnMoon.setAttribute('aria-pressed','true');
+      btnSun.classList.remove('active'); btnSun.setAttribute('aria-pressed','false');
+      mainAction.textContent = 'Puxar Lua';
+      
+      // reset moon near state
+      body.classList.remove('moon-near');
+    }
+
+    // Icon clicks
+    btnSun.addEventListener('click', setDay);
+    btnMoon.addEventListener('click', setNight);
+
+    // Main action behaviour depends on theme
+    mainAction.addEventListener('click', () => {
+      if(body.classList.contains('day')){
+        // Apagar o sol: adiciona classe sun-off que suavemente apaga/retira o sol
+        bgSun.classList.add('sun-off');
+        
+        // opcional: trocar o texto do botão
+        mainAction.textContent = 'Acender Sol';
+        // Toggle para re-aceso quando clicado outra vez
+        mainAction.onclick = () => {
+          bgSun.classList.remove('sun-off');
+          
+          mainAction.textContent = 'Apagar Sol';
+          // restore original click handler
+          mainAction.onclick = null;
+        };
+      } else {
+        // Noite: puxar lua
+        if(!body.classList.contains('moon-near')){
+          body.classList.add('moon-near');
+          
+          mainAction.textContent = 'Empurrar Lua';
+        } else {
+          body.classList.remove('moon-near');
+          
+          mainAction.textContent = 'Puxar Lua';
+        }
+      }
+    });
+
+    // keyboard accessibility: allow left/right arrow to toggle
+    window.addEventListener('keydown', (e)=>{
+      if(e.key === 'ArrowLeft') setDay();
+      if(e.key === 'ArrowRight') setNight();
+    });
+
+    // initialize
+    setDay();
+  </script>
+</body>
+</html>

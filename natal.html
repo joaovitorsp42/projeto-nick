@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Página com neve</title>
+  <style>
+    :root{
+      /* troque essa URL para a sua imagem de fundo */
+      --bg-url: url(/ChatGPT\ Image\ 5\ de\ dez.\ de\ 2025\,\ 20_22_57.png);
+      --snow-color: #ffffff;
+      --max-snow: 40; /* controles básicos */
+    }
+
+    /* estilo base: imagem de fundo cobrindo toda a tela */
+    html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial}
+    .bg{
+      position:fixed;inset:0;background-image:var(--bg-url);background-size:cover;background-position:center center;z-index:0;
+      /* leve escurecimento para dar contraste ao texto sem esconder a imagem */
+      box-shadow:inset 0 0 0 1000px rgba(0,0,0,0.18);
+    }
+
+    /* camada de conteúdo por cima do background (transparente) */
+    .content{
+      position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;
+      text-align:center;color: #fff;
+    }
+
+    /* título com destaque sem tampar a imagem: texto grande, contorno e sombra */
+    h1{
+      font-size:clamp(2rem,6vw,4rem);margin:0 0 1rem;line-height:1.05;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.6), 0 0 6px rgba(255,255,255,0.06);
+      -webkit-text-stroke: 0.6px rgba(0,0,0,0.35);
+      letter-spacing:0.02em;
+    }
+
+    p.lead{
+      max-width:900px;font-size:clamp(1rem,2.6vw,1.25rem);margin:0 auto 1.5rem;opacity:0.95;text-shadow:0 1px 4px rgba(0,0,0,0.55);
+    }
+
+    /* botão estiloso, translúcido para não cobrir fundo */
+    .controls{
+      display:flex;gap:1rem;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:1rem;
+    }
+    button{
+      background: rgba(255,255,255,0.12);backdrop-filter: blur(6px);border:1px solid rgba(255,255,255,0.18);
+      color:white;padding:0.7rem 1rem;border-radius:12px;font-weight:600;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.35);
+      transition:transform .12s ease, background .12s ease;
+    }
+    button:active{transform:translateY(2px) scale(.995)}
+
+    /* área de instruções pequena */
+    .note{font-size:.85rem;opacity:0.9;margin-top:.6rem}
+
+    /* contêiner das flocos (z-index entre bg e content para flocos sobre a imagem e sobre o texto) */
+    .snow-layer{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+
+    /* cada floco */
+    .snowflake{
+      position:absolute;
+      top:-10vh;
+      will-change:transform,opacity;
+      pointer-events:none;
+      font-size:12px;
+      user-select:none;
+      opacity:.9;
+      color: rgba(255,255,255,0.9); /* flocos mais claros */
+      animation-name:fall;
+      animation-timing-function:linear;
+      animation-iteration-count:1;
+    }
+
+    /* queda vertical (calculamos duração inline) */
+    @keyframes fall{
+      0%{transform:translateY(-10vh)}
+      100%{transform:translateY(110vh)}
+    }
+    /* movimento lateral suave */
+    @keyframes sway{
+      0%{transform:translateX(0)}
+      50%{transform:translateX(30px)}
+      100%{transform:translateX(0)}
+    }
+
+    /* responsividade: coloca o texto no canto inferior em telas móveis (opcional) */
+    @media (max-width:640px){
+      .content{padding:1.2rem}
+      h1{font-size:2.2rem}
+    }
+  </style>
+</head>
+<body>
+  <div class="bg" id="bgOverlay" aria-hidden="true"></div>
+
+  <div class="snow-layer" id="snow"></div>
+
+  <main class="content">
+    <h1>Boas Festas — Olhe a paisagem</h1>
+    <p class="lead">Este texto foi desenhado para se destacar sem cobrir a bela imagem de fundo. Use a variável <code>--bg-url</code> no topo do ficheiro para trocar a foto de fundo.</p>
+
+    <div class="controls">
+      <button id="toggleSnow">Começar Neve</button>
+      
+    </div>
+    
+  </main>
+
+  <script>
+  (function(){
+    const snowLayer = document.getElementById('snow');
+    const toggleBtn = document.getElementById('toggleSnow');
+    /* clearBtn removido */
+
+    let running = false;
+    let spawnInterval = null;
+
+    function random(min, max){return Math.random()*(max-min)+min}
+
+    function createFlake(){
+      const flake = document.createElement('div');
+      flake.className = 'snowflake';
+      flake.textContent = '❄';
+
+      const size = Math.round(random(8,20));
+      flake.style.fontSize = size + 'px';
+      flake.style.left = Math.round(random(0,100)) + 'vw';
+      flake.style.opacity = random(0.55, 0.98);
+
+      const duration = random(6,16);
+      flake.style.animation = `fall ${duration}s linear`;
+
+      snowLayer.appendChild(flake);
+
+      setTimeout(()=>{
+        if(flake.parentNode) flake.parentNode.removeChild(flake);
+      }, (duration+0.5)*1000);
+    }
+
+    function spawnLoop(){
+      createFlake();
+    }
+
+    function startSnow(){
+      if(running) return;
+      running = true;
+      toggleBtn.textContent = 'Pausar Neve';
+      spawnInterval = setInterval(spawnLoop, 300);
+    }
+
+    function stopSnow(){
+      running = false;
+      toggleBtn.textContent = 'Começar Neve';
+      if(spawnInterval){clearInterval(spawnInterval);spawnInterval=null}
+    }
+
+    toggleBtn.addEventListener('click', ()=>{
+        const bg = document.getElementById('bgOverlay');
+        const ding = document.getElementById('dingSound');
+
+        if(running){
+          // PAUSAR neve + som
+          stopSnow();
+          bg.style.boxShadow = 'inset 0 0 0 1000px rgba(0,0,0,0.18)';
+          ding.pause();
+          ding.currentTime = 0;
+        } else {
+          // INICIAR neve + som contínuo
+          startSnow();
+          bg.style.boxShadow = 'inset 0 0 0 1000px rgba(0,0,0,0.32)';
+          ding.volume = 0.22; /* volume ajustado novamente para forçar atualização */ /* volume suave para música natalina */ /* volume suave */
+          ding.currentTime = 0;
+ding.play().catch(err => console.log('Erro ao tocar áudio:', err));
+        }
+      });('click', ()=>{
+      if(running) stopSnow(); else startSnow();
+    });
+
+    /* evento de limpar neve removido */
+  })();
+</script>
+  <audio id="dingSound"
+       src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Kevin_MacLeod/Christmas_2011/Kevin_MacLeod_-_Jingle_Bells.mp3"
+       preload="auto"
+       crossOrigin="anonymous"
+       loop>
+</audio>
+</body>
+</html>
+

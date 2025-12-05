@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cartões com Flip e Poemas</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f2f2f2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px;
+    }
+
+    h1 {
+        margin-bottom: 30px;
+        font-size: 28px;
+    }
+
+    .container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 50px;
+    }
+
+    .card {
+        width: 100%; max-width: 250px;
+        height: 360px;
+        perspective: 1000px;
+        cursor: pointer;
+    }
+
+    .card-inner {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        transition: transform 0.8s;
+        transform-style: preserve-3d;
+    }
+
+    .card.flip .card-inner {
+        transform: rotateY(180deg);
+    }
+
+    .card-front, .card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .card-back {
+        transform: rotateY(180deg);
+        background: white;
+        color: black;
+        font-size: 18px;
+        line-height: 1.4;
+        font-weight: normal;
+        text-align: center;
+    }
+
+    /* Cores dos cartões */
+    .vermelho { background: #d62828; }
+    .laranja  { background: #f77f00; }
+    .verde    { background: #2a9d8f; }
+    .amarelo  { background: #fcbf49; }
+</style>
+</head>
+<body>
+
+<h1 style="color:#b30000;">Cartões Poéticos</h1>
+
+<div class="container">
+
+    <!-- Cartão Vermelho -->
+    <div class="card" onclick="flipCard(this)">
+        <div class="card-inner">
+            <div class="card-front vermelho">Vermelho</div>
+            <div class="card-back">Poema vermelho aqui...</div>
+        </div>
+    </div>
+
+    <!-- Cartão Laranja -->
+    <div class="card" onclick="flipCard(this)">
+        <div class="card-inner">
+            <div class="card-front laranja">Laranja</div>
+            <div class="card-back">Poema laranja aqui...</div>
+        </div>
+    </div>
+
+    <!-- Cartão Verde -->
+    <div class="card" onclick="flipCard(this)">
+        <div class="card-inner">
+            <div class="card-front verde">Verde</div>
+            <div class="card-back">Poema verde aqui...</div>
+        </div>
+    </div>
+
+    <!-- Novo Cartão Extra 1 -->
+    <div class="card" onclick="flipCard(this)">
+        <div class="card-inner">
+            <div class="card-front" style="background:#6a4c93;">Roxo</div>
+            <div class="card-back">Poema roxo aqui...</div>
+        </div>
+    </div>
+
+    <!-- Cartão Amarelo -->
+    <div class="card" onclick="flipCard(this)">
+        <div class="card-inner">
+            <div class="card-front amarelo">Amarelo</div>
+            <div class="card-back">Poema amarelo aqui...</div>
+        </div>
+    </div>
+
+    <!-- Novo Cartão Extra 2 -->
+    <div class="card" onclick="flipCard(this)">
+        <div class="card-inner">
+            <div class="card-front" style="background:#264653;">Azul</div>
+            <div class="card-back">Poema azul aqui...</div>
+        </div>
+    </div>
+
+</div>
+            </div>
+
+<script>
+function flipCard(card) {
+    card.classList.toggle('flip');
+}
+</script>
+
+</body>
+</html>

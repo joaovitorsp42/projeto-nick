@@ -1,0 +1,119 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+/* ======== FUNDO ======== */
+body {
+    margin: 0;
+    padding: 0;
+    background: #e5d9c5;
+    font-family: 'Cormorant Garamond', serif;
+    color: #4a3b2f;
+    line-height: 1.8;
+}
+
+/* ======== CARTA COM BORDA ENROLADA ======== */
+main {
+    max-width: 850px;
+    margin: 60px auto;
+    padding: 40px;
+    background: url('https://i.imgur.com/K0x3F3V.jpeg');
+    background-size: cover;
+    background-position: center;
+
+    border: 3px solid #c1a77a;
+    border-radius: 15px;
+
+    box-shadow:
+        0 0 35px rgba(0,0,0,0.25),
+        inset 0 0 30px rgba(0,0,0,0.25);
+
+    position: relative;
+    overflow: hidden;
+
+   
+    
+}
+
+/* ======== TÍTULOS ======== */
+h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 4rem;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #5e2e1e;
+}
+
+/* ======== AVISO ======== */
+h2 {
+    font-size: 2.2rem;
+    margin-top: 30px;
+    color: #8b0000;
+    border-left: 6px solid #8b0000;
+    padding-left: 10px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.aviso-box {
+    background: rgba(139, 0, 0, 0.15);
+    padding: 15px;
+    border: 2px dashed #8b0000;
+    border-radius: 8px;
+    color: #4a0303;
+    margin-bottom: 25px;
+}
+
+/* ======== PARÁGRAFOS MAIS VIVOS E EM NEGRITO ======== */
+p {
+    font-size: 1.3rem;
+    margin: 14px 0;
+    text-indent: 35px;
+
+    /* texto mais vivo */
+    color: #3d2b23; 
+    font-weight: 700; /* negrito */
+}
+
+/* ======== BOTÕES ======== */
+button {
+    margin-top: 20px;
+    margin-right: 10px;
+    padding: 12px 25px;
+    background: #c7a77d;
+    color: #fff;
+    border: none;
+    border-radius: 100px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 2px 3px 6px rgba(0,0,0,0.3);
+}
+
+button:hover {
+    background: #b18f69;
+    transform: translateY(-3px);
+}
+
+button a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* ======== FOOTER DENTRO DA CARTA ======== */
+footer {
+    margin-top: 40px;
+    text-align: center;
+    padding: 20px 0 5px 0;
+}
+
+footer p {
+    font-size: 1.1rem;
+    font-style: italic;
+    color: #5c4a3b;
+}
+
