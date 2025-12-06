@@ -122,11 +122,22 @@
 
   <main>
     <section class="card" id="card" role="region" aria-label="Conteúdo principal">
-      <h1 class="headline">Bem-vindo(a) — escolha Sol ou Lua</h1>
-      <p class="lead">Clique no ícone do <strong>Sol</strong> para um tema claro com um sol radiante. Clique no ícone da <strong>Lua</strong> para o tema escuro com a lua ao fundo. Cada tema oferece um botão de ação com animação.</p>
+      <h1 class="headline">O impossivel irei realizar</h1>
+      <p class="lead">Para te provar que posso te encantar,<br>
+                        até o impossível eu posso realizar.<br>
+
+                        Se me pedir para a lua para perto trazer,<br>
+                        com toda minha força eu a irei mover,<br>
+                        só para ver o teu sorriso acontecer.<br>
+
+                        E se o sol você amar<br>
+                        e desejar um dia tocar,<br>
+                        até o espaço eu irei para o roubar,<br>
+                        só para que, em suas mãos,<br>
+                        você possa dele cuidar.</p>
 
       <div class="action">
-        <button id="mainAction" class="btn" type="button">Apagar Sol</button>
+        <button id="mainAction" class="btn" type="button">Roubar o sol para ti </button>
         
       </div>
     </section>
@@ -146,7 +157,7 @@
       body.classList.add('day');
       btnSun.classList.add('active'); btnSun.setAttribute('aria-pressed','true');
       btnMoon.classList.remove('active'); btnMoon.setAttribute('aria-pressed','false');
-      mainAction.textContent = 'Apagar Sol';
+      mainAction.textContent = 'Roubar o Sol para Ti';
       
       // ensure sun visible
       bgSun.classList.remove('sun-off');
@@ -174,12 +185,12 @@
         bgSun.classList.add('sun-off');
         
         // opcional: trocar o texto do botão
-        mainAction.textContent = 'Acender Sol';
+        mainAction.textContent = 'Devolver o Sol ';
         // Toggle para re-aceso quando clicado outra vez
         mainAction.onclick = () => {
           bgSun.classList.remove('sun-off');
           
-          mainAction.textContent = 'Apagar Sol';
+          mainAction.textContent = 'Roubar o Sol para Ti ';
           // restore original click handler
           mainAction.onclick = null;
         };
