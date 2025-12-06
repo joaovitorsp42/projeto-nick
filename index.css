@@ -76,7 +76,7 @@ p {
 }
 
 /* ======== BOTÕES ======== */
-button {
+.btn {
     margin-top: 20px;
     margin-right: 10px;
     padding: 12px 25px;
@@ -92,12 +92,12 @@ button {
     box-shadow: 2px 3px 6px rgba(0,0,0,0.3);
 }
 
-button:hover {
+.btn:hover {
     background: #b18f69;
     transform: translateY(-3px);
 }
 
-button a {
+    a {
     color: white;
     text-decoration: none;
     font-weight: bold;
