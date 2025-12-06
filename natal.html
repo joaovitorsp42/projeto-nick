@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Página com neve</title>
+  <title>Dingol bell</title>
   <style>
     :root{
       /* troque essa URL para a sua imagem de fundo */
@@ -95,11 +95,19 @@
   <div class="snow-layer" id="snow"></div>
 
   <main class="content">
-    <h1>Boas Festas — Olhe a paisagem</h1>
-    <p class="lead">Este texto foi desenhado para se destacar sem cobrir a bela imagem de fundo. Use a variável <code>--bg-url</code> no topo do ficheiro para trocar a foto de fundo.</p>
+    <h1>Então é natal</h1>
+    <p class="lead">Sei que um Natal normal você quer passar,<br>
+                    mas, no seu coração, começa a se perguntar:<br>
+                    cadê a magia que devia estar no ar<br>
+                    para seus pensamentos de um dia comum transformar?<br>
+                    <br>
+                    Com você eu irei comemorar,<br>
+                    e então, como um passe de mágica,<br>
+                    diante de nossos olhos a vida irá brotar,<br>
+                    e, do céu, a neve começará a dançar.</p>
 
     <div class="controls">
-      <button id="toggleSnow">Começar Neve</button>
+      <button id="toggleSnow">deixe a magia se libertar </button>
       
     </div>
     
@@ -143,13 +151,13 @@
     function startSnow(){
       if(running) return;
       running = true;
-      toggleBtn.textContent = 'Pausar Neve';
+      toggleBtn.textContent = 'respire';
       spawnInterval = setInterval(spawnLoop, 300);
     }
 
     function stopSnow(){
       running = false;
-      toggleBtn.textContent = 'Começar Neve';
+      toggleBtn.textContent = 'deixe a magia se libertar';
       if(spawnInterval){clearInterval(spawnInterval);spawnInterval=null}
     }
 
