@@ -90,6 +90,11 @@ p {
     cursor: pointer;
     transition: 0.3s;
     box-shadow: 2px 3px 6px rgba(0,0,0,0.3);
+        display: flex;
+    flex-wrap: wrap; /* permite quebrar linha com estilo */
+    justify-content: center; /* centraliza */
+    gap: 15px; /* espaçamento perfeito entre botões */
+    margin-top: 20px;
 }
 
 .btn:hover {

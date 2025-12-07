@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Página Amazônia — Contadores</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --forest-1:#0b3b23;
+      --forest-2:#114b2a;
+      --forest-3:#1b6a3f;
+      --leaf:#2aa673;
+      --bg:#081913;
+      --floral-1:#ffefef;
+      --floral-2:#ffd7e0;
+      --floral-3:#ff94c2;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family:'Quicksand',sans-serif;
+      background:linear-gradient(180deg,var(--bg),#062216);
+      color:#e6fff2;
+      padding:20px;
+      display:flex;
+      justify-content:center;
+    }
+
+    .wrap{
+      width:100%;
+      max-width:900px;
+      display:flex;
+      flex-direction:column;
+      gap:20px;
+    }
+
+    /* CARD AMAZÔNIA */
+    .card{
+      background:linear-gradient(180deg,var(--forest-2),var(--forest-3));
+      border-radius:18px;
+      padding:20px;
+      box-shadow:0 8px 24px rgba(0,0,0,0.5);
+      position:relative;
+      overflow:hidden;
+    }
+    .card h1{
+      font-family:'Playfair Display',serif;
+      font-size:26px;
+      margin-bottom:8px;
+    }
+    .timer{
+      margin-top:20px;
+      background:rgba(255,255,255,0.06);
+      border-radius:12px;
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      text-align:center;
+    }
+    .number{
+      font-size:40px;
+      font-weight:700;
+      font-family:'Playfair Display',serif;
+      margin-bottom:4px;
+    }
+
+    /* CARD FLORAL */
+    .floral{
+      background:linear-gradient(180deg,var(--floral-1),var(--floral-2));
+      color:#2b1420;
+      border-radius:18px;
+      padding:20px;
+      text-align:center;
+      box-shadow:0 8px 24px rgba(0,0,0,0.4);
+    }
+    .floral .number{color:#2b1420;font-size:34px}
+
+    /* RESPONSIVO */
+    @media(max-width:500px){
+      .number{font-size:32px}
+      .card h1{font-size:22px}
+      .floral .number{font-size:28px}
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- AMAZÔNIA -->
+  <section class="card">
+    <h1>DIAS ATE O ESPETACULOOOO</h1>
+    <p>ESTA QUASE CHEGANDOOOOOOOO FALTAMMMM</p>
+
+    <div class="timer">
+      <div id="amzDays" class="number">--</div>
+      <div id="amzHours" style="opacity:0.9">--</div>
+    </div>
+  </section>
+
+  <!-- FLORAL -->
+  <section class="floral">
+    <h1 style="font-family:'Playfair Display',serif">🌸 CONTANDO OS DIAS PARA TATUAGEMM 🌸</h1>
+    <p>ESTAMOS EM CONTAGEM REGRESSIVAAA FALTAMMM</p>
+
+    <div class="timer" style="background:rgba(0,0,0,0.06)">
+      <div id="floDays" class="number">--</div>
+      <div id="floHours" style="opacity:0.9">--</div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+function update(){
+  const now = new Date();
+
+  const target20 = new Date(2025,11,20,0,0,0);
+  const target12 = new Date(2025,11,12,0,0,0);
+
+  function calc(target){
+    let diff = target - now;
+    if(diff < 0) diff = 0;
+
+    const totalHours = Math.floor(diff / (1000*60*60));
+    const days = Math.floor(totalHours / 24);
+    const hours = totalHours % 24;
+    const minutes = Math.floor((diff / 60000) % 60);
+
+    return {days, hours, minutes};
+  }
+
+  const a = calc(target20);
+  const f = calc(target12);
+
+  document.getElementById("amzDays").textContent = `Faltam ${a.days} dias`;
+  document.getElementById("amzHours").textContent = `${a.hours}h ${a.minutes}min restantes`;
+
+  document.getElementById("floDays").textContent = `Faltam ${f.days} dias`;
+  document.getElementById("floHours").textContent = `${f.hours}h ${f.minutes}min restantes`;
+}
+
+update();
+setInterval(update,10000);
+</script>
+
+</body>
+</html>
